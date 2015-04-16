@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'populatr/cli'
+Populatr::CLI.start
