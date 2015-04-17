@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'webmock/rspec'
 require 'populatr'
 
 # AWS.stub!

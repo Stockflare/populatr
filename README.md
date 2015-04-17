@@ -10,7 +10,6 @@ The Docker container located at [stockflare/populatr]() will help you to easily 
 
 ---
 `$ docker run --name populatr stockflare/populatr start --listen <sqs queue arn>`
-
 ---
 
 ## Inside the Cloudformation

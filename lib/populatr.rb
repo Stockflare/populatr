@@ -14,6 +14,7 @@ module Populatr
   autoload :Key
   autoload :Poller
   autoload :Request
+  autoload :Response
   autoload :Populate
 
   eager_autoload do

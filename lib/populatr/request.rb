@@ -25,7 +25,7 @@ module Populatr
 
     def verbatim_response
       keys = %w{StackId RequestId LogicalResourceId}
-      body.keep_if { |key| keys.include? key.to_s }
+      body.dup.keep_if { |key| keys.include? key.to_s }
     end
 
   end
