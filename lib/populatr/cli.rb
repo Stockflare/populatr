@@ -15,10 +15,13 @@ module Populatr
 
     class_option :port, type: :string, default: "4001"
 
+    class_option :region, type: :string, default: "us-east-1"
+
     def initialize(*args)
       super
       Populatr.eager_load!
       Populatr::Config(options)
+      Aws.config.update(region: Config[:region])
     end
 
     desc "version", "Displays the current version number of Populatr."

@@ -10,9 +10,7 @@ module Populatr
     end
 
     def poll(&block)
-      sqs.queues[queue].poll do |message|
-        block.call JSON.parse(message.body)
-      end
+      sqs.poll { |message| block.call JSON.parse(message.body) }
     rescue => e
       raise "Error encountered whilst polling #{queue}: #{e.message}"
     end
@@ -20,7 +18,7 @@ module Populatr
     private
 
     def sqs
-      @sqs ||= AWS::SQS.new
+      @sqs ||= Aws::SQS::QueuePoller.new(queue)
     end
 
   end

@@ -6,13 +6,15 @@ ADD . /gem
 
 WORKDIR /gem
 
-RUN rm -rf test
-
 RUN gem build populatr.gemspec
 
-RUN gem install populatr-*.gem
+RUN gem install populatr-*.gem --no-rdoc --no-ri 
 
 RUN rm -r /var/cache/apt /var/lib/apt/lists && apt-get purge -y git && apt-get autoremove -y
+
+WORKDIR /
+
+RUN rm -rf /gem
 
 ENTRYPOINT ["populatr"]
 
