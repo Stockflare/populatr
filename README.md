@@ -8,9 +8,7 @@ This gem provides a CLI, but **is not hosted on Rubygems**. It is designed to be
 
 The Docker container located at [stockflare/populatr]() will help you to easily get started with the Populatr gem. The CLI only supports a few commands, but the only one you should need is `start`.
 
----
 `$ docker run --name populatr stockflare/populatr start --listen <sqs queue arn>`
----
 
 ## Inside the Cloudformation
 
