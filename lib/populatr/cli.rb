@@ -16,18 +16,21 @@ module Populatr
       @argv = argv.dup
       configure_key!
       configure_value!
-      set_key!
     end
 
-    def set_key!
-      Ambassadr::Properties.new(path).set(key, value)
+    def run
+      if Ambassadr::Properties.new(path).set(key, value)
+        "OK: #{key} => #{value}"
+      else
+        raise "unable to set (#{path}) #{key} => #{value}"
+      end
     end
 
     def configure_key!
       key = argv.index("-key")
       raise 'no key has been set' unless key
       argv.delete_at key
-      self.key = key
+      self.key = argv.delete_at(key)
     rescue => e
       puts e
     end
@@ -36,7 +39,7 @@ module Populatr
       value = argv.index("-value")
       raise 'no value has been set' unless value
       argv.delete_at value
-      self.value = value
+      self.value = argv.delete_at(value)
     rescue => e
       puts e
     end
