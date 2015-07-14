@@ -1,0 +1,12 @@
+etcd:
+  image: microbox/etcd
+  command: "-n etcd"
+  ports:
+    - "4001:4001"
+stockflare:
+  build: .
+  command: --help
+  volumes:
+    - .:/stockflare
+  links:
+    - etcd

@@ -1,44 +1,54 @@
-require 'thor'
+require 'ambassadr'
 require 'populatr'
 
 module Populatr
-  # Provides a Command Line Interface for Populatr. See the method definitions
-  # for more information on its usage.
-  #
-  # @example Checking the version
-  #   $ populatr version
-  class CLI < Thor
+  # Provides a Command Line Interface for Populatr.
+  # @todo Describe Usage
+  class CLI
 
-    package_name "Populatr"
+    DEFAULT_PATH = '/properties/shared'
 
-    class_option :host, type: :string, default: "127.0.0.1"
+    attr_reader :argv
 
-    class_option :port, type: :string, default: "4001"
+    attr_accessor :key, :value
 
-    class_option :region, type: :string, default: "us-east-1"
-
-    def initialize(*args)
-      super
-      Populatr.eager_load!
-      Populatr::Config(options)
-      Aws.config.update(region: Config[:region])
+    def initialize(argv = [])
+      @argv = argv.dup
+      configure_key!
+      configure_value!
+      set_key!
     end
 
-    desc "version", "Displays the current version number of Populatr."
-    # Displays the current version of the installed Populatr gem on the command line.
-    # For more help on this command, use `populatr help version` from the command line.
-    def version
-      puts Populatr::VERSION
+    def set_key!
+      Ambassadr::Properties.new(path).set(key, value)
     end
 
-    desc "start", "Start listening to the specified SQS Queue"
-    method_option :listen, :type => :string, :desc => "SQS ARN"
-    # Starts Populatr by binding it to a specific SQS Queue. This method blocks whilst
-    # Populatr is running.
-    def start
-      poller = Poller.new(Config[:listen])
-      poller.poll do |request|
-        Populate.new(Request.new(request)).start!
+    def configure_key!
+      key = argv.index("-key")
+      raise 'no key has been set' unless key
+      argv.delete_at key
+      self.key = key
+    rescue => e
+      puts e
+    end
+
+    def configure_value!
+      value = argv.index("-value")
+      raise 'no value has been set' unless value
+      argv.delete_at value
+      self.value = value
+    rescue => e
+      puts e
+    end
+
+    private
+
+    def path
+      path = argv.index("-path")
+      if path
+        path
+      else
+        ENV['PROPERTIES_PATH'] || DEFAULT_PATH
       end
     end
 
