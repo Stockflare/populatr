@@ -21,6 +21,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "ambassadr"
 
-
-
 end

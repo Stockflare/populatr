@@ -8,7 +8,7 @@ module Populatr
 
     DEFAULT_PATH = '/properties/shared'
 
-    attr_reader :argv
+    attr_reader :argv, :path
 
     attr_accessor :key, :value
 
@@ -16,6 +16,7 @@ module Populatr
       @argv = argv.dup
       configure_key!
       configure_value!
+      configure_path!
     end
 
     def run
@@ -44,15 +45,13 @@ module Populatr
       puts e
     end
 
-    private
-
-    def path
+    def configure_path!
       path = argv.index("-path")
-      if path
-        path
-      else
-        ENV['PROPERTIES_PATH'] || DEFAULT_PATH
-      end
+      raise nil unless path
+      argv.delete_at path
+      @path = argv.delete_at(path)
+    rescue => e
+      puts e
     end
 
   end
